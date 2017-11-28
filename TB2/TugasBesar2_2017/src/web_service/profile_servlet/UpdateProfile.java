@@ -67,9 +67,10 @@ public class UpdateProfile extends HttpServlet {
             if (resultSet.next()) {
 
             } else {
-                query = "INSERT INTO driver (id,rating,votes,status) VALUES (?,NULL,NULL,NULL)";
+                query = "INSERT INTO driver (id,rating,votes,status) VALUES (?,NULL,NULL,?)";
                 PreparedStatement preparedStatement = connection.prepareStatement(query);
                 preparedStatement.setString(1, id);
+                preparedStatement.setString(2,"isPassive");
                 preparedStatement.execute();
             }
             resultSet.close();
