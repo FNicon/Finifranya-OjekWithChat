@@ -1,0 +1,49 @@
+.chatSelf {
+    background-color: #00ACE6;
+    border : 1px solid black;
+    float : right;
+    clear : both;
+    overflow: auto;
+    border-radius : 5px;
+    margin-right: 10px;
+    padding: 5px;
+}
+.chatOther {
+    float : left;
+    clear : both;
+    overflow: auto;
+    background-color: #CCCCCC;
+    border : 1px solid black;
+    border-radius : 5px;
+    margin-left: 10px;
+    padding: 5px;
+}
+.chatFrame {
+    border : 1px solid black;
+}
+.chatSection {
+    height: 250px;
+    overflow: auto;
+}
+.chatFooterFrame {
+    border-top : 1px solid black;
+    height : 40px;
+    margin-bottom : 0px;
+}
+.chatInput {
+    float : left;
+    margin : 5px;
+    height : 30px;
+    width : 70%;
+    border : none;
+}
+.chatButton {
+    background-color: #00CC00;
+    width : 100px;
+    margin :5px;
+    height : 30px;
+    float : right;
+    cursor: pointer;
+    border : 1px solid black;
+    border-radius : 5px;
+}

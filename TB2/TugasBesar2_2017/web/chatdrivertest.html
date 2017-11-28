@@ -1,0 +1,48 @@
+<html>
+<head>
+    <title>Search Order</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/orderDriver.css">
+    <link rel="stylesheet" href="css/chat.css">
+</head>
+<body>
+    <div class="container">
+        <!--%
+            //statusDriverOrder = passive, searching, active
+            String statusDriverOrder = "passive";
+            out.println(printHeader((String) session.getAttribute("username")));
+            out.println(printNavbar("order"));
+        %-->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-title">
+                    LOOKING FOR AN ORDER
+                </div>
+            </div>
+        </div>
+        <!--%if(statusDriverOrder == "passive") { %-->
+        <div class = "passivePage">
+            <form>
+                <input class="centerButtonFind" type="button" value="FIND ORDER" onclick="changeToFinding()">
+            </form>
+        </div>
+        <!--% } else if(statusDriverOrder == "searching") { %-->
+            <div class="findingPage">
+                <p class="textFindingWaiting">Finding Order....</p>
+                <form>
+                    <input class="centerButtonCancel" type="button" value="CANCEL" onclick="cancelFinding()">
+                </form>
+            </div>
+        <!--% } else { %-->
+            <div class="chattingPage">
+                <p class="textNotifOrdering">Got an Order!</p>
+                <p class="textUsernameOrdering">Username Ordering</p>
+                <include page="include/chat"/>
+                <jsp:include page="include/chat.jsp"/>
+                <jsp:include page="include/chat-footer.jsp"/>
+            </div>
+        <!--% } %-->
+    </div>
+    <script src="js/orderDriverStatus.js"></script>
+</body>
+</html>

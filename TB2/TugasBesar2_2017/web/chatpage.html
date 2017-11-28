@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/orderDriver.css">
+    <link rel="stylesheet" href="css/chat.css">
+</head>
+<body ng-app="chatapp" ng-controller="ChatAppCtrl as chatApp">
+    <div class="chatSection" ng-repeat="message in ChatMessages">
+        <p ng-if="message.recId == 1" class="chatSelf">
+            {{message.message}}
+        </p>
+        <p ng-if="message.recId == 2" class="chatOther">
+            {{message.message}}
+        </p>
+    </div>
+    <script src="js/angular.js"></script>
+    <script src="js/chatapp.js"></script>
+</body>
+</html>

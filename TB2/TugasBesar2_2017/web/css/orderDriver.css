@@ -1,0 +1,56 @@
+.centerButtonFind {
+    margin-top : 100px;
+    margin-left : 150px;
+    background-color: #00CC00;
+    width : 150px;
+    height : 40px;
+    font-size : 23px;
+    border : 1px solid black;
+    border-radius : 5px;
+    cursor: pointer;
+    color : white;
+    font-family: "Rokkitt", serif;
+}
+.centerButtonCancel {
+    margin-top : 40px;
+    margin-left : 150px;
+    font-size : 23px;
+    width : 150px;
+    height : 40px;
+    background-color: #d50027;
+    border : 1px solid black;
+    border-radius : 5px;
+    cursor: pointer;
+    color : white;
+    font-family: "Rokkitt", serif;
+}
+.passivePage {
+
+}
+.findingPage {
+    margin-top: 100px;
+
+}
+.textFindingWaiting {
+    font-weight: bold;
+    text-align: center;
+    font-size : 26px;
+    font-family: "Rokkitt", serif;
+}
+.textNotifOrdering {
+    margin-bottom: 0px;
+    margin-top: 0px;
+    font-weight: bold;
+    text-align: center;
+    color : #33cc33;
+    font-size : 26px;
+    font-family: "Rokkitt", serif;
+    
+}
+.textUsernameOrdering {
+    margin-top: 0px;
+    font-weight: bold;
+    text-align: center;
+    font-size : 18px;
+    font-family: "Rokkitt", serif;
+}
