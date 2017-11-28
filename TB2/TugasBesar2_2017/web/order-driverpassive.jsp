@@ -14,7 +14,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Search Order</title>
+    <title>NGEEENG! - A Solution for Your Transportation</title>
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/orderDriver.css">
     <link rel="stylesheet" href="css/chat.css">
@@ -27,9 +27,7 @@
         %>
         <div class="section">
             <div class="section-header">
-                <div class="section-title">
-                    LOOKING FOR AN ORDER
-                </div>
+                <div class="section-title">LOOKING FOR AN ORDER</div>
             </div>
         </div>
         <%

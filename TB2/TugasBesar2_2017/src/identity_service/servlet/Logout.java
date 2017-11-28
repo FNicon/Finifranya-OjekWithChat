@@ -14,7 +14,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-@WebServlet("/Logout")
+@WebServlet(name = "Logout")
 public class Logout extends HttpServlet {
     protected void doGet(HttpServletRequest request,
                          HttpServletResponse response)

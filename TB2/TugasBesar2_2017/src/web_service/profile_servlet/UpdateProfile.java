@@ -14,52 +14,37 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.*;
 
-@WebServlet("/UpdateProfile")
+@WebServlet(name = "UpdateProfile")
 public class UpdateProfile extends HttpServlet {
-    protected void doPost(HttpServletRequest request, HttpServletResponse
-            response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         AccessToken access = new AccessToken();
         access.getCurrentToken((Integer) request.getSession().getAttribute("id"));
         if (AccessToken.isTokenExpiredInvalid(request, response)) {
             return;
         } else {
-            AccessToken.updateAccessToken((Integer) request.getSession()
-                    .getAttribute("id"), access);
+            AccessToken.updateAccessToken((Integer) request.getSession().getAttribute("id"), access);
         }
-
         HttpSession session = request.getSession();
-
-        if (!User.isUpdateDataValid(request.getParameter("name"), request
-                .getParameter("phone"))) {
+        if (!User.isUpdateDataValid(request.getParameter("name"), request.getParameter("phone"))) {
             session.setAttribute("errorMessage", true);
-
-            response.sendRedirect(request.getContextPath() +
-                    "/profile-editprofile.jsp");
-
+            response.sendRedirect(request.getContextPath() + "/profile-editprofile.jsp");
             return;
         }
 
-        IdentityServiceDbConnection identityServiceDbConnection = new
-                IdentityServiceDbConnection();
-        Connection connection = identityServiceDbConnection
-                .getConnection();
-
+        IdentityServiceDbConnection identityServiceDbConnection = new IdentityServiceDbConnection();
+        Connection connection = identityServiceDbConnection.getConnection();
         boolean isDriver = false;
         if (request.getParameter("status") != null) {
             isDriver = true;
         }
 
         try {
-            String query = "UPDATE user SET name=?, phone=?, isDriver=? WHERE" +
-                    " id=?";
-
-            PreparedStatement preparedStatement = connection
-                    .prepareStatement(query);
+            String query = "UPDATE user SET name=?, phone=?, isDriver=? WHERE" + " id=?";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, request.getParameter("name"));
             preparedStatement.setString(2, request.getParameter("phone"));
             preparedStatement.setBoolean(3, isDriver);
             preparedStatement.setString(4, request.getParameter("id"));
-
             preparedStatement.execute();
             preparedStatement.close();
             session.setAttribute("name", request.getParameter("name"));
@@ -70,16 +55,13 @@ public class UpdateProfile extends HttpServlet {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-        response.sendRedirect(request.getContextPath() +
-                "/profile-editprofile.jsp");
+        response.sendRedirect(request.getContextPath() + "/profile-editprofile.jsp");
     }
     public void setIsDriver(String id) {
         WebServiceDbConnection webServiceDbConnection = new WebServiceDbConnection();
         Connection connection = webServiceDbConnection.getConnection();
         try {
-            String query = "SELECT * FROM driver WHERE id=\"" + id
-                + "\"";
+            String query = "SELECT * FROM driver WHERE id=\"" + id + "\"";
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
             if (resultSet.next()) {

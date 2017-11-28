@@ -13,41 +13,28 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-@WebServlet("/AddLocation")
+@WebServlet(name = "AddLocation")
 public class AddLocation extends HttpServlet {
-    protected void doPost(HttpServletRequest request, HttpServletResponse
-            response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         AccessToken access = new AccessToken();
         access.getCurrentToken((Integer) request.getSession().getAttribute("id"));
         if (AccessToken.isTokenExpiredInvalid(request, response)) {
             return;
         } else {
-            AccessToken.updateAccessToken((Integer) request.getSession()
-                    .getAttribute("id"), access);
+            AccessToken.updateAccessToken((Integer) request.getSession().getAttribute("id"), access);
         }
-
-        WebServiceDbConnection webServiceDbConnection = new
-                WebServiceDbConnection();
-        Connection connection = webServiceDbConnection
-                .getConnection();
+        WebServiceDbConnection webServiceDbConnection = new WebServiceDbConnection();
+        Connection connection = webServiceDbConnection.getConnection();
         try {
-            String query = "INSERT INTO preferred_loc (id, place) VALUES " +
-                    "(?, ?)";
-
-            PreparedStatement preparedStatement = connection
-                    .prepareStatement(query);
+            String query = "INSERT INTO preferred_loc (id, place) VALUES " + "(?, ?)";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, request.getParameter("id"));
-            preparedStatement.setString(2, request.getParameter
-                    ("newlocation"));
-
+            preparedStatement.setString(2, request.getParameter("newlocation"));
             preparedStatement.execute();
-
             preparedStatement.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-        response.sendRedirect(request.getContextPath() +
-                "/profile-editlocations.jsp");
+        response.sendRedirect(request.getContextPath() + "/profile-editlocations.jsp");
     }
 }

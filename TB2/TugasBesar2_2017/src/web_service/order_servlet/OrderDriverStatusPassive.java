@@ -20,8 +20,7 @@ public class OrderDriverStatusPassive extends HttpServlet {
     if (AccessToken.isTokenExpiredInvalid(request, response)) {
       return;
     } else {
-      AccessToken.updateAccessToken((Integer) request.getSession()
-          .getAttribute("id"), access);
+      AccessToken.updateAccessToken((Integer) request.getSession().getAttribute("id"), access);
     }
     HttpSession session = request.getSession();
     setDrivertoPassive((Integer) session.getAttribute("id"));

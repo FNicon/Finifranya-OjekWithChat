@@ -52,5 +52,6 @@
     <orderEntry type="library" name="express-DefinitelyTyped" level="application" />
     <orderEntry type="library" name="angular-DefinitelyTyped" level="application" />
     <orderEntry type="library" name="src" level="project" />
+    <orderEntry type="library" name="FastInoset" level="project" />
   </component>
 </module>

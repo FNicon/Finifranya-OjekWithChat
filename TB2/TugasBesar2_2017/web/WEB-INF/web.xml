@@ -3,7 +3,20 @@
          xmlns="http://xmlns.jcp.org/xml/ns/javaee"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
-
+    <listener>
+        <listener-class>com.sun.xml.ws.transport.http.servlet.WSServletContextListener</listener-class>
+    </listener>
+    <servlet>
+        <description>JAX-WS endpoint</description>
+        <display-name>WSServlet</display-name>
+        <servlet-name>WSServlet</servlet-name>
+        <servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>WSServlet</servlet-name>
+        <url-pattern>/services/*</url-pattern>
+    </servlet-mapping>
     <servlet>
         <servlet-name>HistoryHide</servlet-name>
         <servlet-class>web_service.hide_servlet.HistoryHide</servlet-class>
@@ -35,5 +48,93 @@
     <servlet-mapping>
         <servlet-name>OrderDriverStatusPassive</servlet-name>
         <url-pattern>/OrderDriverStatusPassive</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>ChatDriver</servlet-name>
+        <servlet-class>web_service.order_servlet.ChatDriver</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ChatDriver</servlet-name>
+        <url-pattern>/ChatDriver</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>CompleteOrder</servlet-name>
+        <servlet-class>web_service.order_servlet.CompleteOrder</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CompleteOrder</servlet-name>
+        <url-pattern>/CompleteOrder</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>SaveOrder</servlet-name>
+        <servlet-class>web_service.order_servlet.SaveOrder</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SaveOrder</servlet-name>
+        <url-pattern>/SaveOrder</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>SelectDriver</servlet-name>
+        <servlet-class>web_service.order_servlet.SelectDriver</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SelectDriver</servlet-name>
+        <url-pattern>/SelectDriver</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>AddLocation</servlet-name>
+        <servlet-class>web_service.profile_servlet.AddLocation</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AddLocation</servlet-name>
+        <url-pattern>/AddLocation</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>DeleteLocation</servlet-name>
+        <servlet-class>web_service.profile_servlet.DeleteLocation</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DeleteLocation</servlet-name>
+        <url-pattern>/DeleteLocation</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>UpdateLocation</servlet-name>
+        <servlet-class>web_service.profile_servlet.UpdateLocation</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UpdateLocation</servlet-name>
+        <url-pattern>/UpdateLocation</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>UpdateProfile</servlet-name>
+        <servlet-class>web_service.profile_servlet.UpdateProfile</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UpdateProfile</servlet-name>
+        <url-pattern>/UpdateProfile</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>Login</servlet-name>
+        <servlet-class>identity_service.servlet.Login</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Login</servlet-name>
+        <url-pattern>/Login</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>Logout</servlet-name>
+        <servlet-class>identity_service.servlet.Logout</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Logout</servlet-name>
+        <url-pattern>/Logout</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>SignUp</servlet-name>
+        <servlet-class>identity_service.servlet.SignUp</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SignUp</servlet-name>
+        <url-pattern>/SignUp</url-pattern>
     </servlet-mapping>
 </web-app>

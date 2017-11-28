@@ -15,7 +15,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Chat Driver</title>
+    <title>NGEEENG! - A Solution for Your Transportation</title>
     <link rel="stylesheet" href="css/chat.css">
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/orderDriver.css">
@@ -29,36 +29,9 @@
         <div class="section">
             <%
                 out.println(printOrderHeaderCustomer("ChatDriver"));
-            %>
-            <!--div class="section-header">
-                <div class="section-title">
-                    MAKE AN ORDER
-                </div>
-            </div>
-            <div class="section-step row">
-                <div class="step">
-                    <div class="step-no">1</div>
-                    <div class="step-guide">Select Destination</div>
-                </div>
-                <div class="step">
-                    <div class="step-no">2</div>
-                    <div class="step-guide">Select A Driver</div>
-                </div>
-                <div class="step active">
-                    <div class="step-no-container">
-                        <div class="step-no">3</div>
-                    </div>
-                    <div class="step-guide">Chat Driver</div>
-                </div>
-                <div class="step">
-                    <div class="step-no">4</div>
-                    <div class="step-guide">Complete your orders</div>
-                </div>
-            </div-->
-            <%
                 Service service = WebService.getService("9999", "OrderData");
                 OrderData orderData = service.getPort(OrderData.class);
-                int driverId = orderData.getIdByUserName("DevinCP");
+                int driverId = (Integer) session.getAttribute("driverID");
             %>
         </div>
         <div class = "chatFrame">

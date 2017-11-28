@@ -22,8 +22,7 @@ public class OrderDriverStatusFinding extends HttpServlet {
     if (AccessToken.isTokenExpiredInvalid(request, response)) {
       return;
     } else {
-      AccessToken.updateAccessToken((Integer) request.getSession()
-          .getAttribute("id"), access);
+      AccessToken.updateAccessToken((Integer) request.getSession().getAttribute("id"), access);
     }
     HttpSession session = request.getSession();
     setDrivertoFinding((Integer) session.getAttribute("id"));

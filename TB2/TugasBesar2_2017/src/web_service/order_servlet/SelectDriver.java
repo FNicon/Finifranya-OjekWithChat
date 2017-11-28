@@ -10,26 +10,21 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebServlet("/SelectDriver")
+@WebServlet(name = "SelectDriver")
 public class SelectDriver extends HttpServlet {
-    protected void doPost(HttpServletRequest request, HttpServletResponse
-            response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         AccessToken access = new AccessToken();
         access.getCurrentToken((Integer) request.getSession().getAttribute("id"));
         if (AccessToken.isTokenExpiredInvalid(request, response)) {
             return;
         } else {
-            AccessToken.updateAccessToken((Integer) request.getSession()
-                    .getAttribute("id"), access);
+            AccessToken.updateAccessToken((Integer) request.getSession().getAttribute("id"), access);
         }
-
         HttpSession session = request.getSession();
         session.setAttribute("userId", request.getParameter("userId"));
         session.setAttribute("origin", request.getParameter("origin"));
         session.setAttribute("destination", request.getParameter("destination"));
         session.setAttribute("preferredDriver", request.getParameter("preferredDriver"));
-
-        response.sendRedirect(request.getContextPath() +
-                "/order-selectdriver.jsp");
+        response.sendRedirect(request.getContextPath() + "/order-selectdriver.jsp");
     }
 }

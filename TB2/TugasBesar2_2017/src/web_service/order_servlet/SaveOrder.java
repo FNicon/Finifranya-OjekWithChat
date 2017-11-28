@@ -14,46 +14,33 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-@WebServlet("/SaveOrder")
+@WebServlet(name = "SaveOrder")
 public class SaveOrder extends HttpServlet {
-    protected void doPost(HttpServletRequest request, HttpServletResponse
-            response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         AccessToken access = new AccessToken();
         access.getCurrentToken((Integer) request.getSession().getAttribute("id"));
         if (AccessToken.isTokenExpiredInvalid(request, response)) {
             return;
         } else {
-            AccessToken.updateAccessToken((Integer) request.getSession()
-                    .getAttribute("id"), access);
+            AccessToken.updateAccessToken((Integer) request.getSession().getAttribute("id"), access);
         }
-
         HttpSession session = request.getSession();
-
         session.setAttribute("order_rating", request.getParameter("rating"));
         session.setAttribute("comment", request.getParameter("comment"));
-
-        WebServiceDbConnection webServiceDbConnection = new
-                WebServiceDbConnection();
+        WebServiceDbConnection webServiceDbConnection = new WebServiceDbConnection();
         Connection connection = webServiceDbConnection.getConnection();
-
         try {
             String query = "INSERT into orders (date, origin, destination, " +
                     "order_rating, comment, id_driver, id_user) VALUES (?, ?," +
                     " ?, ?, ?, ?, ?)";
-
             java.util.Date date = new java.util.Date();
             String origin = (String) session.getAttribute("origin");
             String destination = (String) session.getAttribute("destination");
-            int order_rating = Integer.parseInt((String) session.getAttribute
-                    ("order_rating"));
+            int order_rating = Integer.parseInt((String) session.getAttribute("order_rating"));
             String comment = (String) session.getAttribute("comment");
-            int id_driver = Integer.parseInt((String) session.getAttribute
-                    ("driverId"));
-            int id_user = Integer.parseInt((String) session.getAttribute
-                    ("userId"));
-
-            PreparedStatement preparedStatement = connection
-                .prepareStatement(query);
+            int id_driver = Integer.parseInt((String) session.getAttribute("driverId"));
+            int id_user = Integer.parseInt((String) session.getAttribute("userId"));
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setDate(1, new java.sql.Date(date.getTime()));
             preparedStatement.setString(2, origin);
             preparedStatement.setString(3, destination);
@@ -61,13 +48,10 @@ public class SaveOrder extends HttpServlet {
             preparedStatement.setString(5, comment);
             preparedStatement.setInt(6, id_driver);
             preparedStatement.setInt(7, id_user);
-
             preparedStatement.execute();
         } catch (SQLException se) {
             se.printStackTrace();
         }
-
-        response.sendRedirect(request.getContextPath() +
-                "/profile.jsp");
+        response.sendRedirect(request.getContextPath() + "/profile.jsp");
     }
 }
