@@ -29,7 +29,7 @@
                 <%
                     if (session.getAttribute("preferredDriver") != null) {
                         String preferredDriver = (String) session.getAttribute("preferredDriver");
-                        String driver = orderData.getPreferredDriver(preferredDriver, (String) session.getAttribute("origin"), (Integer) session.getAttribute("id"));
+                        String driver = orderData.getPreferredDriver(preferredDriver, (String) session.getAttribute("origin"), (String) session.getAttribute ("destination"), (Integer) session.getAttribute("id"));
                         JSONObject driverInfo = null;
                         try {
                             driverInfo = new JSONObject(driver);
@@ -106,7 +106,7 @@
             <div class="section-select-driver">
                 OTHER DRIVERS:
                 <%
-                    ArrayList<String> drivers = orderData.getAvailableDrivers((String) session.getAttribute("origin"), (Integer) session.getAttribute("id")).getList();
+                    ArrayList<String> drivers = orderData.getAvailableDrivers((String) session.getAttribute("origin"), (String) session.getAttribute("destination"),(Integer) session.getAttribute("id")).getList();
                     if (!drivers.isEmpty()) {
                         for (String driver : drivers) {
                             JSONObject driverInfo = null;

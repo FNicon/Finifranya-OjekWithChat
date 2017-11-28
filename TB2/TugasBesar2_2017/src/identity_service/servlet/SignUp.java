@@ -14,10 +14,7 @@ import java.io.IOException;
 
 @WebServlet(name = "SignUp")
 public class SignUp extends HttpServlet {
-    protected void doPost(HttpServletRequest request,
-                          HttpServletResponse response)
-            throws ServletException, IOException {
-
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String name = request.getParameter("name");
         String username = request.getParameter("username");
         String email = request.getParameter("email");
@@ -25,27 +22,22 @@ public class SignUp extends HttpServlet {
         String confirmPassword = request.getParameter("confirm_password");
         String phoneNumber = request.getParameter("phone");
         boolean isDriver = request.getParameter("phone") != null;
-
         if (!User.isSignUpDataValid(name, username, email, password,
                 confirmPassword, phoneNumber)) {
             HttpSession session = request.getSession();
             session.setAttribute("errorMessage", true);
             session.setAttribute("errorMessageType", "1");
-
             response.sendRedirect(request.getContextPath() + "/signup.jsp");
         } else if (User.isUserAlreadyExists(username, email)) {
             HttpSession session = request.getSession();
             session.setAttribute("errorMessage", true);
             session.setAttribute("errorMessageType", "2");
-
             response.sendRedirect(request.getContextPath() + "/signup.jsp");
         } else {
             User.signUp(name, username, email, password, phoneNumber, isDriver);
-
             UserInfo userInfo = User.getUserInfo(username);
             AccessToken accessToken = new AccessToken();
             AccessToken.updateAccessToken(userInfo.getId(), accessToken);
-
             HttpSession session = request.getSession();
             session.setAttribute("id", userInfo.getId());
             session.setAttribute("name", name);
@@ -56,7 +48,6 @@ public class SignUp extends HttpServlet {
             session.setAttribute("isDriver", isDriver);
             session.setAttribute("profilePic", userInfo.getProfilePic());
             session.setAttribute("accessToken", accessToken);
-
             response.sendRedirect(request.getContextPath() + "/profile.jsp");
         }
     }

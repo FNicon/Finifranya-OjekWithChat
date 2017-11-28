@@ -14,7 +14,7 @@ import java.util.ArrayList;
 @javax.jws.WebService(endpointInterface = "web_service.OrderData")
 public class OrderDataImplementation implements OrderData {
     @Override
-    public String getPreferredDriver(String origin, String username, int userId) {
+    public String getPreferredDriver(String origin, String destination, String username, int userId) {
         IdentityServiceDbConnection identityServiceDbConnection = new IdentityServiceDbConnection();
         Connection idConnection = identityServiceDbConnection.getConnection();
         WebServiceDbConnection webServiceDbConnection = new WebServiceDbConnection();
@@ -22,22 +22,21 @@ public class OrderDataImplementation implements OrderData {
         int driverId = getIdByUserName(username);
         JSONObject driver = new JSONObject();
         try {
-            String idQuery = "SELECT id, name, profilePicture FROM user WHERE" + " id='" + driverId + "' AND id<>'" + userId + "'";
+            String idQuery = "SELECT id, name, profilePicture FROM user WHERE id='" + driverId + "' AND id<>'" + userId + "' AND isDriver=1";
             Statement idStatement = idConnection.createStatement();
             ResultSet idResultSet = idStatement.executeQuery(idQuery);
             while (idResultSet.next()) {
                 String name = idResultSet.getString("name");
                 String profilePic = idResultSet.getString("profilePicture");
                 try {
-                    String wsQuery = "SELECT AVG(order_rating) as rating, COUNT(order_id) as votes FROM orders " +
-                            "JOIN preferred_loc ON (id_driver = id) WHERE id='" +
-                            driverId + "' AND id<>'" + userId + "' AND " +
-                            "place='" + origin + "'";
+                    String wsQuery = "SELECT id FROM driver NATURAL JOIN preferred_loc WHERE id='" +
+                            driverId + "' AND id<>'" + userId + "' AND (place='" + origin + "' OR place='" + destination +"') AND status='isFinding'";
                     Statement wsStatement = wsConnection.createStatement();
                     ResultSet wsResultSet = wsStatement.executeQuery(wsQuery);
                     while (wsResultSet.next()) {
-                        float rating = wsResultSet.getFloat("rating");
-                        int votes = wsResultSet.getInt("votes");
+                        int filteredID = wsResultSet.getInt("id");
+                        float rating = getDriverRating(filteredID);
+                        int votes = getDriverVote(filteredID);
                         try {
                             driver.put("id", driverId);
                             driver.put("name", name);
@@ -59,15 +58,14 @@ public class OrderDataImplementation implements OrderData {
     }
 
     @Override
-    public PojoList getAvailableDrivers(String origin, int userId) {
+    public PojoList getAvailableDrivers(String origin, String destination, int userId) {
         IdentityServiceDbConnection identityServiceDbConnection = new IdentityServiceDbConnection();
         Connection idConnection = identityServiceDbConnection.getConnection();
         WebServiceDbConnection webServiceDbConnection = new WebServiceDbConnection();
         Connection wsConnection = webServiceDbConnection.getConnection();
         ArrayList<String> drivers = new ArrayList<>();
         try {
-            String idQuery = "SELECT id, name, profilePicture FROM user WHERE" +
-                    " id<>'" + userId + "'";
+            String idQuery = "SELECT id, name, profilePicture FROM user WHERE id<>'" + userId + "' AND isDriver=1";
             Statement idStatement = idConnection.createStatement();
             ResultSet idResultSet = idStatement.executeQuery(idQuery);
             while (idResultSet.next()) {
@@ -75,15 +73,14 @@ public class OrderDataImplementation implements OrderData {
                 String name = idResultSet.getString("name");
                 String profilePic = idResultSet.getString("profilePicture");
                 try {
-                    String wsQuery = "SELECT AVG(order_rating) as rating, COUNT(order_id) as votes FROM orders " +
-                            "JOIN preferred_loc ON (id_driver = id) WHERE id='" +
-                            driverId + "' AND id<>'" + userId + "' AND " +
-                            "place='" + origin + "'";
+                    String wsQuery = "SELECT id FROM driver NATURAL JOIN preferred_loc WHERE id='" + driverId
+                        + "' AND id<>'" + userId + "' AND (place='" + origin + "' OR place='" + destination + "') AND status='isFinding'";
                     Statement wsStatement = wsConnection.createStatement();
                     ResultSet wsResultSet = wsStatement.executeQuery(wsQuery);
                     while (wsResultSet.next()) {
-                        float rating = wsResultSet.getFloat("rating");
-                        int votes = wsResultSet.getInt("votes");
+                        int filteredID = wsResultSet.getInt("id");
+                        float rating = getDriverRating(filteredID);
+                        int votes = getDriverVote(filteredID);
                         JSONObject driver = new JSONObject();
                         try {
                             driver.put("id", driverId);
@@ -185,7 +182,6 @@ public class OrderDataImplementation implements OrderData {
         String driverStatusNow = "NULL";
         int statusNow = 0;
         try {
-            //driverStatusNow = session.getAttribut("statusDriver");
             String query = "SELECT status FROM driver WHERE id='" + id + "'";
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
@@ -205,5 +201,51 @@ public class OrderDataImplementation implements OrderData {
             se.printStackTrace();
         }
         return (statusNow);
+    }
+    @Override
+    public float getDriverRating(int id) {
+        WebServiceDbConnection webServiceDbConnection = new WebServiceDbConnection();
+        Connection wsConnection = webServiceDbConnection.getConnection();
+        float Rating = 0;
+        int Votes = 0;
+        try {
+            //driverStatusNow = session.getAttribut("statusDriver");
+            String query = "SELECT COUNT(order_id) as votes, AVG(order_rating) as rating FROM orders WHERE id_driver='"+id+"'";
+            Statement statement = wsConnection.createStatement();
+            ResultSet resultSet = statement.executeQuery(query);
+            while (resultSet.next()) {
+                Votes = resultSet.getInt("votes");
+                if (Votes==0) {
+                    Rating = 0;
+                } else {
+                    Rating = resultSet.getFloat("rating");
+                }
+            }
+            resultSet.close();
+            statement.close();
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+        return Rating;
+    }
+    @Override
+    public int getDriverVote(int id) {
+        WebServiceDbConnection webServiceDbConnection = new WebServiceDbConnection();
+        Connection wsConnection = webServiceDbConnection.getConnection();
+        int Vote = 0;
+        try {
+            //driverStatusNow = session.getAttribut("statusDriver");
+            String query = "SELECT COUNT(order_id) as votes FROM orders WHERE id_driver='"+id+"'";
+            Statement statement = wsConnection.createStatement();
+            ResultSet resultSet = statement.executeQuery(query);
+            while (resultSet.next()) {
+                Vote = resultSet.getInt("votes");
+            }
+            resultSet.close();
+            statement.close();
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+        return Vote;
     }
 }

@@ -14,19 +14,13 @@ import java.io.IOException;
 
 @WebServlet(name = "Login")
 public class Login extends HttpServlet {
-    protected void doPost(HttpServletRequest request,
-                          HttpServletResponse response)
-            throws ServletException, IOException {
-
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-
         if (User.isUserCredentialValid(username, password)) {
             UserInfo userInfo = User.getUserInfo(username);
-
             AccessToken accessToken = new AccessToken();
             AccessToken.updateAccessToken(userInfo.getId(), accessToken);
-
             HttpSession session = request.getSession();
             session.setAttribute("id", userInfo.getId());
             session.setAttribute("name", userInfo.getName());
@@ -37,12 +31,10 @@ public class Login extends HttpServlet {
             session.setAttribute("isDriver", userInfo.isDriver());
             session.setAttribute("profilePic", userInfo.getProfilePic());
             session.setAttribute("accessToken", accessToken);
-
             response.sendRedirect(request.getContextPath() + "/profile.jsp");
         } else {
             HttpSession session = request.getSession();
             session.setAttribute("errorMessage", true);
-
             response.sendRedirect(request.getContextPath() + "/login.jsp");
         }
     }

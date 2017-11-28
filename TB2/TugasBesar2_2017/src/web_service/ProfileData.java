@@ -12,4 +12,8 @@ public interface ProfileData {
     public PojoList getPreferredLocations(int id);
     @WebMethod
     public void setIsDriver(int id);
+    @WebMethod
+    public float getDriverRating(int id);
+    @WebMethod
+    public int getDriverVote(int id);
 }

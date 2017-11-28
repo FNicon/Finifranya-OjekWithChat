@@ -5,6 +5,7 @@
 <%@ page import="web_service.WebService" %>
 <%@ page import="javax.xml.ws.Service" %>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="web_service.OrderData" %>
 
 <%@ page contentType="text/html;charset=UTF-8" %>
 <!DOCTYPE HTML>
@@ -19,8 +20,10 @@
             out.println(printHeader((String) session.getAttribute("username")));
             out.println(printNavbar("profile"));
             session.removeAttribute("errorMessage");
+            Service service = WebService.getService("9999", "ProfileData");
+            ProfileData profileData = service.getPort(ProfileData.class);
+            int id = (Integer) session.getAttribute("id");
         %>
-
         <div class="section">
             <div class="section-header">
                 <div class="section-title">MY PROFILE</div>
@@ -47,8 +50,8 @@
                         %>
                     </span>
                     <%
-                        if (session.getAttribute("driverRating") != null) {
-                            out.println("| <span class=\"profile-rating\">  &#9734 " + Math.round((Float) session.getAttribute("driverRating")) + " (" + session.getAttribute("driverVotes") + " votes)</span>");
+                        if ((Boolean) session.getAttribute("isDriver")) {
+                            out.println("| <span class=\"profile-rating\">  &#9734 " + Math.round((Float) profileData.getDriverRating(id)) + " (" + profileData.getDriverVote(id) + " votes)</span>");
                         }
                     %>
                 </div>
@@ -66,9 +69,7 @@
                                 "<div class=\"section-edit-button\">" +
                                     "<a href=\"profile-editlocations.jsp\">&#x270E;</a>" +
                                 "</div></div>");
-                    Service service = WebService.getService("9999", "ProfileData");
-                    ProfileData profileData = service.getPort(ProfileData.class);
-                    int id = (Integer) session.getAttribute("id");
+
                     PojoList pojoList = profileData.getPreferredLocations(id);
                     ArrayList<String> locations = pojoList.getList();
                     if (locations.size() != 0) {
